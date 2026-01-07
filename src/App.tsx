@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Navigation } from '@/components/navigation';
 import Home from '@/pages/home';
-import HelloNear from '@/pages/hello_near';
+
 import { useWalletEvents, hotConnector } from '@/hooks/useNearWallet';
 
 // Query Client configuration
@@ -32,7 +32,6 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/hello-near" element={<HelloNear />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

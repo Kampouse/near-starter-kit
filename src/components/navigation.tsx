@@ -35,13 +35,13 @@ export const Navigation = () => {
         </Link>
         <div className="ml-auto flex items-center gap-3 pt-1">
           {isError && error && (
-            <span className="text-sm text-red-500">
+            <span className="text-sm text-red-400 dark:text-red-300">
               {error instanceof Error ? error.message : 'Wallet error'}
             </span>
           )}
           <button
             type="button"
-            className="rounded bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded bg-[rgb(0,192,139)] px-4 py-2 text-white transition-colors hover:bg-[rgb(0,169,125)] disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleAction}
             disabled={loading}
           >
