@@ -5,7 +5,7 @@ A modern, production-ready template for building Web3 applications on the NEAR b
 ## ✨ Features
 
 - 🚀 **Modern Stack**: Built with React 19, TypeScript, and Tailwind CSS v4
-- 🔗 **NEAR Integration**: Seamless wallet connection using @hot-labs/kit
+- 🔗 **NEAR Integration**: Seamless wallet connection using @hot-labs/hot-connector
 - ⚡ **Data Fetching**: Powerful caching and synchronization with TanStack Query
 - 🌐 **Cloudflare Deployment**: Optimized for Cloudflare Pages with automatic HTTPS
 - 🧪 **Testing Support**: Compatible with NEAR Workspaces JS for smart contract testing
@@ -37,10 +37,10 @@ A modern, production-ready template for building Web3 applications on the NEAR b
 ```bash
 # Clone the repository
 git clone <your-repo-url>
-cd pnl
+cd near-starter-kit
 
 # Install dependencies
-npm install
+pnpm install
 ```
 
 ### Development
@@ -112,7 +112,7 @@ pnl/
 
 ## 🔑 Key Libraries
 
-### @hot-labs/kit
+### @hot-labs/hot-connector
 [GitHub](https://github.com/hot-dao/hot-connector)
 
 - Seamless NEAR wallet connection
