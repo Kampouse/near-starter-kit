@@ -1,13 +1,33 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Navigation } from "@/components/navigation";
-import Home from "@/pages/home";
-import HelloNear from "@/pages/hello_near";
-import { NearProvider } from 'near-connect-hooks';
+import { Navigation } from '@/components/navigation';
+import Home from '@/pages/home';
+import HelloNear from '@/pages/hello_near';
+import { useWalletEvents, hotConnector } from '@/hooks/useNearWallet';
 
-function App () {
+// Query Client configuration
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    },
+  },
+});
+
+// Wallet Events Listener Component
+function WalletEventsListener() {
+  useWalletEvents();
+  return null;
+}
+
+// Main App Component
+function App() {
   return (
-    <NearProvider>
+    <QueryClientProvider client={queryClient}>
+      <WalletEventsListener />
       <BrowserRouter>
         <Navigation />
         <Routes>
@@ -15,8 +35,9 @@ function App () {
           <Route path="/hello-near" element={<HelloNear />} />
         </Routes>
       </BrowserRouter>
-    </NearProvider>
+    </QueryClientProvider>
   );
-};
+}
 
 export default App;
+export { hotConnector };

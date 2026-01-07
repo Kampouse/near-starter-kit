@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "near-connect-hooks": "^1.0.2",
+    "@hot-labs/kit": "^1.1.3",
+    "@tanstack/react-query": "^5.90.16",
     "react": "^19",
     "react-dom": "^19",
     "react-router": "^7"
