@@ -1,7 +1,7 @@
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { routeTree } from './routeTree.gen';
-import { useWalletEvents, hotConnector } from '@/hooks/useNearWallet';
+import { hotConnector } from '@/lib/connector';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,11 +12,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-function WalletEventsListener() {
-  useWalletEvents();
-  return null;
-}
 
 const router = createRouter({ routeTree });
 
@@ -29,7 +24,6 @@ declare module '@tanstack/react-router' {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <WalletEventsListener />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );

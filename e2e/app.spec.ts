@@ -12,8 +12,8 @@ test.describe('NEAR Starter Kit', () => {
   test('wallet login button visible', async ({ page }) => {
     await page.goto('/');
     
-    const loginButton = page.getByRole('button', { name: /login/i });
-    await expect(loginButton).toBeVisible();
+    const connectButton = page.getByRole('button', { name: /connect/i });
+    await expect(connectButton).toBeVisible();
   });
 
   test('NEAR logo visible in navigation', async ({ page }) => {

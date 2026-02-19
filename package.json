@@ -17,6 +17,8 @@
     "@hot-labs/kit": "^1.1.3",
     "@tanstack/react-query": "^5.90.16",
     "@tanstack/react-router": "^1.161.1",
+    "better-auth": "^1.4.18",
+    "better-near-auth": "^0.3.4",
     "hono": "^4.12.0",
     "react": "^19",
     "react-dom": "^19",

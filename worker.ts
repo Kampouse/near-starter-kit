@@ -1,15 +1,23 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { auth } from './src/lib/auth';
 
 type Env = {
   ASSETS: Fetcher;
   NEAR_NETWORK: string;
+  BETTER_AUTH_SECRET: string;
 };
 
 const app = new Hono<{ Bindings: Env }>();
 
 // Enable CORS for API routes
 app.use('/api/*', cors());
+app.use('/auth/*', cors());
+
+// Better Auth handler
+app.all('/auth/*', async (c) => {
+  return auth.handler(c.req.raw);
+});
 
 // Health check endpoint
 app.get('/health', (c) => {

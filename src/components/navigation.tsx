@@ -1,25 +1,91 @@
 import { Link } from '@tanstack/react-router';
 import NearLogo from '@/assets/near-logo.svg';
-import { useNearWallet } from '@/hooks/useNearWallet';
+import { authClient } from '@/lib/auth-client';
+import { useState, useEffect } from 'react';
 
 export const Navigation = () => {
-  const { signedAccountId, loading, connect, disconnect, isError, error } =
-    useNearWallet();
+  const [session, setSession] = useState<any>(null);
+  const [isConnectingWallet, setIsConnectingWallet] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [accountId, setAccountId] = useState<string | null>(null);
 
-  const handleAction = async () => {
+  useEffect(() => {
+    // Get initial account ID
+    setAccountId(authClient.near.getAccountId());
+    
+    // Subscribe to session changes
+    const unsub = authClient.useSession.subscribe((s) => {
+      setSession(s.data);
+    });
+    return unsub;
+  }, []);
+
+  const handleWalletConnect = async () => {
+    setIsConnectingWallet(true);
     try {
-      if (signedAccountId) {
-        await disconnect();
-      } else {
-        await connect();
-      }
+      await authClient.requestSignIn.near(
+        { recipient: "near-starter-kit.pages.dev" },
+        {
+          onSuccess: () => {
+            setIsConnectingWallet(false);
+            setAccountId(authClient.near.getAccountId());
+          },
+          onError: (error) => {
+            setIsConnectingWallet(false);
+            console.error('Wallet connection failed:', error.message);
+          },
+        }
+      );
     } catch (error) {
-      console.error('Wallet action failed:', error);
-      // Error is already handled by the mutation in useNearWallet
+      setIsConnectingWallet(false);
+      console.error('Wallet connection error:', error);
     }
   };
 
-  const buttonLabel = loading ? 'Loading...' : signedAccountId || 'Login';
+  const handleSignIn = async () => {
+    setIsSigningIn(true);
+    try {
+      await authClient.signIn.near(
+        { recipient: "near-starter-kit.pages.dev" },
+        {
+          onSuccess: () => {
+            setIsSigningIn(false);
+          },
+          onError: (error) => {
+            setIsSigningIn(false);
+            console.error('Sign in failed:', error.message);
+          },
+        }
+      );
+    } catch (error) {
+      setIsSigningIn(false);
+      console.error('Sign in error:', error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    setSession(null);
+    setAccountId(null);
+  };
+
+  const getButtonLabel = () => {
+    if (isConnectingWallet) return 'Connecting...';
+    if (isSigningIn) return 'Signing in...';
+    if (session) return session.user?.name || 'Sign out';
+    if (accountId) return `Sign in (${accountId})`;
+    return 'Connect Wallet';
+  };
+
+  const handleAction = () => {
+    if (session) {
+      handleSignOut();
+    } else if (accountId) {
+      handleSignIn();
+    } else {
+      handleWalletConnect();
+    }
+  };
 
   return (
     <nav className="flex w-full items-center justify-between px-6 py-4">
@@ -34,18 +100,13 @@ export const Navigation = () => {
           />
         </Link>
         <div className="ml-auto flex items-center gap-3 pt-1">
-          {isError && error && (
-            <span className="text-sm text-red-400 dark:text-red-300">
-              {error instanceof Error ? error.message : 'Wallet error'}
-            </span>
-          )}
           <button
             type="button"
             className="rounded bg-[rgb(0,192,139)] px-4 py-2 text-white transition-colors hover:bg-[rgb(0,169,125)] disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleAction}
-            disabled={loading}
+            disabled={isConnectingWallet || isSigningIn}
           >
-            {buttonLabel}
+            {getButtonLabel()}
           </button>
         </div>
       </div>
