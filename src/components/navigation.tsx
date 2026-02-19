@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from '@tanstack/react-router';
 import NearLogo from '@/assets/near-logo.svg';
 import { useNearWallet } from '@/hooks/useNearWallet';
 
