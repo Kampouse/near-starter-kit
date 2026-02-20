@@ -98,3 +98,6 @@ bundle-stats/
 dev.db
 dev.db-shm
 dev.db-wal
+
+# Drizzle migrations (generated)
+drizzle/
