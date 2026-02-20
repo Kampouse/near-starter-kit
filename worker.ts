@@ -28,7 +28,12 @@ app.get('/health', (c) => {
   });
 });
 
-// API routes placeholder
+// Better Auth API routes (including better-near-auth endpoints like /api/auth/near/nonce)
+app.all('/api/auth/*', async (c) => {
+  return auth.handler(c.req.raw);
+});
+
+// Other API routes placeholder
 app.all('/api/*', (c) => {
   return c.json({ error: 'API endpoint not implemented' }, 404);
 });

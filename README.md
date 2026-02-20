@@ -35,6 +35,7 @@ A modern, production-ready template for building Web3 applications on the NEAR b
 - npm or pnpm
 - Cloudflare account (for deployment)
 - Wrangler CLI (install with `npm install -g wrangler`)
+- SQLite3 (for local development database)
 
 ## 🚀 Getting Started
 
@@ -139,6 +140,25 @@ near-starter-kit/
 
 This starter uses [Better Auth](https://better-auth.com) with the [better-near-auth](https://github.com/elliotBraem/better-near-auth) plugin for Sign in with NEAR.
 
+### Database Setup
+
+The auth system uses Drizzle ORM with SQLite for local development:
+
+```bash
+# Generate database migrations
+pnpm drizzle-kit generate
+
+# Push schema to database
+pnpm drizzle-kit push
+```
+
+The database schema includes:
+- **user** - User accounts with roles and ban status
+- **session** - User sessions with IP and user agent tracking
+- **account** - OAuth provider accounts
+- **verification** - Email/phone verification codes
+- **nearAccount** - NEAR wallet linkage (required by better-near-auth)
+
 ### Two-Step Auth Flow
 
 ```tsx
@@ -160,6 +180,15 @@ await authClient.signIn.near(
 ```tsx
 const { data: session } = authClient.useSession();
 const profile = await authClient.near.getProfile();
+```
+
+### Reset Database
+
+To reset the database (delete and recreate):
+
+```bash
+rm -f dev.db dev.db-shm dev.db-wal
+pnpm drizzle-kit push
 ```
 
 ## 🔑 Key Libraries

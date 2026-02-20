@@ -36,6 +36,7 @@ lerna-debug.log*
 # Environment variables
 .env
 .env.local
+.env.development
 .env.development.local
 .env.test.local
 .env.production.local
@@ -94,3 +95,6 @@ bundle-stats/
 *.local
 .vscode/settings.json
 .vscode/tasks.json
+dev.db
+dev.db-shm
+dev.db-wal

@@ -14,6 +14,18 @@ export default defineConfig({
       buffer: 'buffer',
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8788',
+        changeOrigin: true,
+      },
+      '/auth': {
+        target: 'http://localhost:8788',
+        changeOrigin: true,
+      },
+    },
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
